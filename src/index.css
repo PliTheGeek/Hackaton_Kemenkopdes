@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-agro: #00450d;
+  --color-primary-container-agro: #1b5e20;
+  --color-on-primary-container-agro: #90d689;
+  --color-secondary-agro: #7a5649;
+  --color-secondary-container-agro: #fdcdbc;
+  --color-on-secondary-container-agro: #795548;
+  --color-tertiary-agro: #4c3700;
+  --color-tertiary-container-agro: #694d00;
+  --color-tertiary-fixed-agro: #ffdfa0;
+  --color-background-agro: #f9f9f9;
+  --color-surface-lowest: #ffffff;
+  --color-surface-low: #f3f3f3;
+  --color-surface-container: #eeeeee;
+  --color-surface-high: #e8e8e8;
+  --color-surface-highest: #e2e2e2;
+  --color-outline-agro: #717a6d;
+  --color-outline-variant-agro: #c0c9bb;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #f9f9f9;
+    color: #1a1c1c;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  display-inline-flex: true;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(113, 122, 109, 0.15);
+}
+
+/* Transitions */
+.transition-all-300 {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
