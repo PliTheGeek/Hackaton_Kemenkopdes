@@ -16,19 +16,22 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            
             set -e
+            branch="${{ github.ref_name }}"
             echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
-            sudo mkdir -p "$HOME/web-kemenkopdes"
+            mkdir -p "$HOME/web-kemenkopdes"
             cd "$HOME/web-kemenkopdes"
             if [ ! -d .git ]; then
-              git clone --branch main --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
+              git clone --branch "$branch" --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
             else
-              git fetch origin main
-              git reset --hard origin/main
+              git fetch origin "$branch"
+              git reset --hard "origin/$branch"
             fi
-            npm install
-            npm run build
+            sudo docker run --rm \
+              -v "$PWD:/app" \
+              -w /app \
+              node:20-alpine \
+              sh -lc "npm install && npm run build"
             rm -rf public/*
             cp -r dist/* public/
             sudo docker exec web-kemenkopdes nginx -s reload
