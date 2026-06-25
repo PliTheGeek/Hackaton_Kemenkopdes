@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - deploy
+
 jobs:
   deploy:
-            sudo mkdir -p "$HOME/web-kemenkopdes"
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy web app only
         uses: appleboy/ssh-action@v1.2.0
         with:
