@@ -16,11 +16,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            sudo su
             set -e
             echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
-            mkdir -p /root/web-kemenkopdes
-            cd /root/web-kemenkopdes
+            mkdir -p "$HOME/web-kemenkopdes"
+            cd "$HOME/web-kemenkopdes"
             if [ ! -d .git ]; then
               git clone --branch main --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
             else
