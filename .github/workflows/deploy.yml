@@ -1,0 +1,34 @@
+name: Deploy Web App via Git Pull
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy web app only
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            set -e
+            echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
+            mkdir -p /root/web-kemenkopdes
+            cd /root/web-kemenkopdes
+            if [ ! -d .git ]; then
+              git clone --branch main --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
+            else
+              git fetch origin main
+              git reset --hard origin/main
+            fi
+            npm install
+            npm run build
+            rm -rf public/*
+            cp -r dist/* public/
+            docker exec web-kemenkopdes nginx -s reload
+            echo "Deploy Kemenkopdes selesai. node-web dan mqtt-broker tidak disentuh."
