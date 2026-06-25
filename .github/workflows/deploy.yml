@@ -16,37 +16,33 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-              set -e
-              branch="${{ github.ref_name }}"
-              app_dir="$HOME/web-kemenkopdes"
+                set -e
+                branch="${{ github.ref_name }}"
+                app_dir="$HOME/web-kemenkopdes"
 
-              echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
-              mkdir -p "$app_dir"
+                mkdir -p "$app_dir"
+                sudo chown -R "$USER:$USER" "$app_dir"
+                cd "$app_dir"
 
-              # Ensure current SSH user can write git objects
-              sudo chown -R "$USER:$USER" "$app_dir"
-              sudo find "$app_dir" -type d -exec chmod u+rwx {} \;
-              sudo find "$app_dir" -type f -exec chmod u+rw {} \;
+                if [ ! -d .git ]; then
+                  git clone --branch "$branch" --single-branch \
+                    https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
+                else
+                  git config --global --add safe.directory "$app_dir"
 
-              cd "$app_dir"
+    # fetch branch tip and reset to it
+    git fetch --depth=1 origin "$branch"
+    git reset --hard FETCH_HEAD
+    git clean -fd
+  fi
 
-              if [ ! -d .git ]; then
-                git clone --branch "$branch" --single-branch \
-                  https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
-              else
-                git config --global --add safe.directory "$app_dir"
-                git fetch origin "$branch"
-                git reset --hard "origin/$branch"
-                git clean -fd
-              fi
+  sudo docker run --rm \
+    -v "$PWD:/app" \
+    -w /app \
+    node:20-alpine \
+    sh -lc "npm install && npm run build"
 
-              sudo docker run --rm \
-                -v "$PWD:/app" \
-                -w /app \
-                node:20-alpine \
-                sh -lc "npm install && npm run build"
-
-              rm -rf public/*
-              cp -r dist/* public/
-              sudo docker exec web-kemenkopdes nginx -s reload
+  rm -rf public/*
+  cp -r dist/* public/
+  sudo docker exec web-kemenkopdes nginx -s reload
               echo "Deploy Kemenkopdes selesai. node-web dan mqtt-broker tidak disentuh."
