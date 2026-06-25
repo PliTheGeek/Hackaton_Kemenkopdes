@@ -36,7 +36,7 @@ jobs:
               else
                 git config --global --add safe.directory "$app_dir"
                 git fetch origin "$branch"
-                git reset --hard "origin/$branch"
+                git reset --hard FETCH_HEAD
                 git clean -fd
               fi
 
