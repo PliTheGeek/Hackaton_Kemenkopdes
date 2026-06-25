@@ -18,7 +18,7 @@ jobs:
           script: |
               set -e
               branch="${{ github.ref_name }}"
-              app_dir="$HOME/web-kemenkopdes"
+              app_dir="/var/opt/web-kemenkopdes"
 
               echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
               mkdir -p "$app_dir"
