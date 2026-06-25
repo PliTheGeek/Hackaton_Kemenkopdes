@@ -16,6 +16,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
+            sudo su
             set -e
             echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
             mkdir -p "$HOME/web-kemenkopdes"
