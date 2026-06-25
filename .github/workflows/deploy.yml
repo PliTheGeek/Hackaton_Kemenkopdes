@@ -16,9 +16,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            sudo su
+            
             set -e
             echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
+            sudo su -
             mkdir -p "$HOME/web-kemenkopdes"
             cd "$HOME/web-kemenkopdes"
             if [ ! -d .git ]; then
