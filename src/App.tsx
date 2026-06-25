@@ -1,337 +1,300 @@
-import { useState } from "react";
-import { Sidebar, UserRole } from "./components/Sidebar";
-import { Header } from "./components/Header";
-import { FarmerDashboard } from "./views/FarmerDashboard";
-import { FarmerRegistration } from "./views/FarmerRegistration";
-import { PasarTani } from "./views/PasarTani";
-import { ProductDetail } from "./views/ProductDetail";
-import { AdminDashboard } from "./views/AdminDashboard";
-import { TraderDashboard } from "./views/TraderDashboard";
-import { CropSubmission, MarketProduct, SubmissionStatus, Trader, TraderOrder } from "./types";
-import { initialSubmissions, initialCoopSubmissions, initialProducts, defaultTrader, initialOrders, IMAGES } from "./data";
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
+import { 
+  ViewType, 
+  Land, 
+  Farmer, 
+  Approval, 
+  CatalogItem, 
+  Transaction, 
+  LandReport,
+  INITIAL_LANDS,
+  INITIAL_FARMERS,
+  INITIAL_APPROVALS,
+  INITIAL_CATALOG,
+  INITIAL_TRANSACTIONS,
+  INITIAL_LAND_REPORTS
+} from './types';
+import LandingPageView from './components/LandingPageView';
+import LoginPageView from './components/LoginPageView';
+import FarmerDashboardView from './components/FarmerDashboardView';
+import ManagerDashboardView from './components/ManagerDashboardView';
+import BuyerDashboardView from './components/BuyerDashboardView';
+import GlobalHistoryView from './components/GlobalHistoryView';
+import { Sprout, Users, ShieldCheck, ShoppingCart, Database, Globe } from 'lucide-react';
 
 export default function App() {
-  // UI Roles & active navigation state
-  const [role, setRole] = useState<UserRole>("farmer");
-  const [activeTab, setActiveTab] = useState<string>("f_dashboard");
+  // Navigation State
+  const [view, setView] = useState<ViewType>(() => {
+    const saved = localStorage.getItem('kemenkopdes_view');
+    return (saved as ViewType) || 'landing';
+  });
 
-  // Global Interactive States linking the circular agrarian economy
-  const [submissions, setSubmissions] = useState<CropSubmission[]>([
-    ...initialSubmissions,
-    ...initialCoopSubmissions
-  ]);
-  const [products, setProducts] = useState<MarketProduct[]>(initialProducts);
-  const [traderProfile, setTraderProfile] = useState<Trader>(defaultTrader);
-  const [traderOrders, setTraderOrders] = useState<TraderOrder[]>(initialOrders);
+  // User Authentication State
+  const [currentRole, setCurrentRole] = useState<'petani' | 'manager' | 'pembeli' | null>(() => {
+    const saved = localStorage.getItem('kemenkopdes_role');
+    return (saved as 'petani' | 'manager' | 'pembeli') || null;
+  });
 
-  // Detail item viewing state
-  const [selectedProduct, setSelectedProduct] = useState<MarketProduct | null>(null);
+  // Core Data States with localStorage Persistence
+  const [lands, setLands] = useState<Land[]>(() => {
+    const saved = localStorage.getItem('kemenkopdes_lands');
+    return saved ? JSON.parse(saved) : INITIAL_LANDS;
+  });
 
-  // UI utility states
-  const [cartCount, setCartCount] = useState<number>(3); // simulated starting count
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showNotifications, setShowNotifications] = useState<boolean>(false);
-  const [recentAlerts, setRecentAlerts] = useState<string[]>([
-    "Sistem Terpadu: Selamat datang di portal digital AgroKarya Kemenkopdes.",
-    "Batas Lahan baru berhasil direkam oleh Satelit Mitra GPS.",
-    "Admin: Silakan verifikasi pengajuan panen jagung siti lailatul."
-  ]);
+  const [farmers, setFarmers] = useState<Farmer[]>(() => {
+    const saved = localStorage.getItem('kemenkopdes_farmers');
+    return saved ? JSON.parse(saved) : INITIAL_FARMERS;
+  });
 
-  // Handle a new harvest submission from the Farmer dashboard modal or manual registry
-  const handleAddSubmission = (newSub: { commodity: string; type: string; volume: number; landArea: string }) => {
-    const randomId = `#P-${Math.floor(22930 + Math.random() * 100)}`;
-    const freshSubmission: CropSubmission = {
-      id: randomId,
-      farmerId: "KDMP-0012",
-      farmerName: "Petani Sejahtera",
-      commodity: newSub.commodity,
-      type: newSub.type,
-      volume: newSub.volume,
-      landArea: newSub.landArea,
-      date: "Hari Ini",
-      status: SubmissionStatus.Menunggu
+  const [approvals, setApprovals] = useState<Approval[]>(() => {
+    const saved = localStorage.getItem('kemenkopdes_approvals');
+    return saved ? JSON.parse(saved) : INITIAL_APPROVALS;
+  });
+
+  const [catalog, setCatalog] = useState<CatalogItem[]>(() => {
+    const saved = localStorage.getItem('kemenkopdes_catalog');
+    return saved ? JSON.parse(saved) : INITIAL_CATALOG;
+  });
+
+  const [transactions, setTransactions] = useState<Transaction[]>(() => {
+    const saved = localStorage.getItem('kemenkopdes_transactions');
+    return saved ? JSON.parse(saved) : INITIAL_TRANSACTIONS;
+  });
+
+  const [landReports, setLandReports] = useState<LandReport[]>(() => {
+    const saved = localStorage.getItem('kemenkopdes_land_reports');
+    return saved ? JSON.parse(saved) : INITIAL_LAND_REPORTS;
+  });
+
+  // Synchronize States to LocalStorage
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_view', view);
+  }, [view]);
+
+  useEffect(() => {
+    if (currentRole) {
+      localStorage.setItem('kemenkopdes_role', currentRole);
+    } else {
+      localStorage.removeItem('kemenkopdes_role');
+    }
+  }, [currentRole]);
+
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_lands', JSON.stringify(lands));
+  }, [lands]);
+
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_farmers', JSON.stringify(farmers));
+  }, [farmers]);
+
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_approvals', JSON.stringify(approvals));
+  }, [approvals]);
+
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_catalog', JSON.stringify(catalog));
+  }, [catalog]);
+
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_transactions', JSON.stringify(transactions));
+  }, [transactions]);
+
+  useEffect(() => {
+    localStorage.setItem('kemenkopdes_land_reports', JSON.stringify(landReports));
+  }, [landReports]);
+
+  // Callbacks for interactions
+  const handleLoginSuccess = (role: 'petani' | 'manager' | 'pembeli') => {
+    setCurrentRole(role);
+    if (role === 'petani') {
+      setView('petani');
+    } else if (role === 'manager') {
+      setView('manager');
+    } else {
+      setView('pembeli');
+    }
+  };
+
+  const handleLogout = () => {
+    setCurrentRole(null);
+    setView('landing');
+  };
+
+  const handleAddLandReport = (newReport: LandReport) => {
+    // Add to land reports table
+    setLandReports(prev => [newReport, ...prev]);
+
+    // Also add an audit transaction to represent the submission in global logs
+    const newTrx: Transaction = {
+      id: `TRX-${Math.floor(10000 + Math.random() * 90000)}`,
+      tanggal: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      produk: `Usulan Panen: ${newReport.produk}`,
+      detail: `${newReport.lahan} • Pagu Estimasi`,
+      entitas: 'Sutaryo (Petani)',
+      role: 'PETANI',
+      kuantitas: newReport.volume,
+      totalHarga: 0, // Pending calculation
+      margin: 0,
+      status: 'Tinjauan',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRMcxQvLpKXC-PV0ZwXpMH16XVVRnMWn5wbkModTojJ-QoeJ9ecriDwLkwOU51wzq0nyP657eIV6OjtIXpNWi3qV8i4MGwd_Bs4QGnOOwIADe4Vsvta7UJJNo0jc8ntQ-uoASdCCLmxjyYZ4kbl67OfiXebOhWxDR7vYKegR5j051LBcD-rVYcU6tcUaIZBkIHriAizhVbA3BbyfcyyVFP2yt6dpVb3mu6xey9XJcrJOv7Fqo32bR5IX4q9-8MfIFTzwVPq-xxtpY'
     };
-
-    setSubmissions([freshSubmission, ...submissions]);
-    
-    // Add real-time notification log
-    setRecentAlerts([
-      `Pengajuan baru ${newSub.commodity} (${newSub.volume} Kg) berhasil diajukan ke KUD.`,
-      ...recentAlerts
-    ]);
-
-    // Triggers feedback message toast
-    alert(`Sukses Lapor Panen! Pengajuan ${newSub.commodity} telah dikirim ke KUD Mitra Mandiri dengan ID: ${randomId}.`);
+    setTransactions(prev => [newTrx, ...prev]);
   };
 
-  // Farmer registration success callback
-  const handleRegistrationSuccess = (newSub: { commodity: string; type: string; volume: number; landArea: string }) => {
-    handleAddSubmission(newSub);
-    // Automatically navigate back to dashboard
-    setActiveTab("f_dashboard");
+  const handleAddFarmer = (newFarmer: Farmer) => {
+    setFarmers(prev => [...prev, newFarmer]);
   };
 
-  // Cooperative Admin actions: Approve a crop submission
-  const handleApproveSubmission = (id: string) => {
-    const subToApprove = submissions.find(s => s.id === id);
-    if (!subToApprove) return;
-
-    // 1. Update submissions status to Diterima (Approved)
-    setSubmissions(submissions.map(s => s.id === id ? { ...s, status: SubmissionStatus.Diterima } : s));
-
-    // 2. Insert approved submission as a new purchasable product in Pasar Tani catalogue!
-    const isRice = subToApprove.commodity.toLowerCase().includes("padi") || subToApprove.commodity.toLowerCase().includes("beras");
-    const freshCat = isRice ? "Beras" : subToApprove.type === "Sayur" ? "Sayur" : "Biji-bijian";
-    
-    const newMarketProduct: MarketProduct = {
-      id: `prod-approved-${subToApprove.id}`,
-      name: `${subToApprove.commodity} Segar - Hasil Panen Unggul`,
-      category: freshCat as any,
-      origin: "Cianjur",
-      price: isRice ? 15000 : 8500, // standard price
-      unit: "kg",
-      image: isRice ? IMAGES.pandanWangiHands : IMAGES.productChilies,
-      available: true,
-      stock: subToApprove.volume,
-      farmerName: subToApprove.farmerName,
-      cooperative: "KUD Mitra Mandiri",
-      harvestDate: "Segera Diproses",
-      method: "Petani Plasma Unggul",
-      elevation: "500 - 700 MDPL",
-      coordinates: { lat: -7.2515, lng: 112.7711 },
-      desc: `Produk pertanian premium terpilih hasil panen langsung dari lahan terdata sah milik ${subToApprove.farmerName}. Diproses secara aman dengan asiatik kedaulatan pangan modern, bebas residu pestisida kimia.`
-    };
-
-    setProducts([newMarketProduct, ...products]);
-
-    // 3. Log notification
-    setRecentAlerts([
-      `Koperasi menyetujui pengajuan ${subToApprove.id} (${subToApprove.commodity}) milik ${subToApprove.farmerName}!`,
-      ...recentAlerts
-    ]);
-
-    alert(`Sukses Verifikasi! Pengajuan ${subToApprove.id} milik ${subToApprove.farmerName} telah disetujui & otomatis dipasarkan di Pasar Tani Digital.`);
+  const handleAddApproval = (newApproval: Approval) => {
+    setApprovals(prev => [newApproval, ...prev]);
   };
 
-  // Cooperative Admin actions: Reject a crop submission
-  const handleRejectSubmission = (id: string) => {
-    const subToReject = submissions.find(s => s.id === id);
-    if (!subToReject) return;
+  const handleVerifyReport = (idx: number) => {
+    // Set report status to TERDIVERIFIKASI
+    const updatedReports = [...landReports];
+    const report = updatedReports[idx];
+    if (report) {
+      report.status = 'TERDIVERIFIKASI';
+      setLandReports(updatedReports);
 
-    setSubmissions(submissions.map(s => s.id === id ? { ...s, status: SubmissionStatus.Ditolak } : s));
-
-    setRecentAlerts([
-      `Koperasi menolak pengajuan ${subToReject.id} demi keakuratan standard sertifikat lahan.`,
-      ...recentAlerts
-    ]);
+      // Find the corresponding pending transaction and mark it accepted / complete
+      const cleanVol = parseInt(report.volume.replace(/[^0-9]/g, '')) || 500;
+      const updatedTransactions = transactions.map(t => {
+        if (t.produk.includes(report.produk) && t.role === 'PETANI' && t.status === 'Tinjauan') {
+          return {
+            ...t,
+            status: 'Diterima' as const,
+            totalHarga: cleanVol * 6800, // Calculated standard price
+            detail: `${report.lahan} • Terverifikasi KDMP`
+          };
+        }
+        return t;
+      });
+      setTransactions(updatedTransactions);
+    }
   };
 
-  // Cooperative Admin: Add a submission manually
-  const handleAddNewCoopSubmission = (newSub: CropSubmission) => {
-    setSubmissions([newSub, ...submissions]);
-    setRecentAlerts([
-      `Petani baru ${newSub.farmerName} terdaftar secara manual oleh Admin.`,
-      ...recentAlerts
-    ]);
-  };
-
-  // SPPG Trader checkout buy action
-  const handleTraderBulkBuy = (product: MarketProduct, quantity: number) => {
-    // 1. Deduct Product stock
-    setProducts(products.map(p => {
-      if (p.id === product.id) {
-        const remainingStock = Math.max(0, p.stock - quantity);
-        return {
-          ...p,
-          stock: remainingStock,
-          available: remainingStock > 0
-        };
-      }
-      return p;
-    }));
-
-    // 2. Add as a purchase order trace in Trader active history
-    const isRice = product.name.toLowerCase().includes("beras") || product.name.toLowerCase().includes("padi");
-    const freshGrade = isRice ? "Premium Grade A" : "Indonesian Grade 1";
-    
-    const freshTraderOrder: TraderOrder = {
-      id: `#ORD-${Math.floor(9430 + Math.random() * 100)}`,
-      commodity: product.name.split("-")[0].trim(),
-      grade: freshGrade,
-      quantity: quantity,
-      origin: product.origin,
-      amount: quantity * product.price,
-      status: "Processing",
-      date: "Hari Ini",
-      image: product.image
-    };
-
-    setTraderOrders([freshTraderOrder, ...traderOrders]);
-    setCartCount(cartCount + 1); // visually increment cart size
-
-    // 3. Log alert
-    setRecentAlerts([
-      `Trader Budi Darmawan membeli borongan ${quantity.toLocaleString("id-ID")} unit komoditas ${product.name}!`,
-      ...recentAlerts
-    ]);
+  const handleAddTransaction = (newTrx: Transaction) => {
+    setTransactions(prev => [newTrx, ...prev]);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans">
+    <div className="min-h-screen pb-20 relative">
+      {/* View Router */}
+      {view === 'landing' && (
+        <LandingPageView onNavigate={setView} />
+      )}
       
-      {/* Sidebar navigation context */}
-      <Sidebar
-        role={role}
-        setRole={setRole}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onLogout={() => {
-          alert("Aksi logout disimulasikan. Hubungi Dinas Kemenkopdes.");
-        }}
-      />
-
-      {/* Main Content Pane */}
-      <div className="flex-grow pl-80 flex flex-col min-h-screen">
-        
-        {/* Header toolbar */}
-        <Header
-          role={role}
-          activeTab={activeTab}
-          cartCount={cartCount}
-          onCartClick={() => {
-            alert(`Keranjang belanja terisi produk borongan hasil tani KUD.`);
-          }}
-          onNewOrderClick={() => {
-            setActiveTab("f_market");
-          }}
-          onSearch={(term) => setSearchTerm(term)}
-          searchTerm={searchTerm}
-          onOpenNotifications={() => setShowNotifications(!showNotifications)}
+      {view === 'login' && (
+        <LoginPageView onNavigate={setView} onLoginSuccess={handleLoginSuccess} />
+      )}
+      
+      {view === 'petani' && (
+        <FarmerDashboardView 
+          lands={lands}
+          landReports={landReports}
+          transactions={transactions}
+          onAddLandReport={handleAddLandReport}
+          onLogout={handleLogout}
+          onNavigate={setView}
         />
+      )}
+      
+      {view === 'manager' && (
+        <ManagerDashboardView 
+          farmers={farmers}
+          landReports={landReports}
+          approvals={approvals}
+          transactions={transactions}
+          onAddFarmer={handleAddFarmer}
+          onAddApproval={handleAddApproval}
+          onVerifyReport={handleVerifyReport}
+          onLogout={handleLogout}
+          onNavigate={setView}
+        />
+      )}
+      
+      {view === 'pembeli' && (
+        <BuyerDashboardView 
+          catalog={catalog}
+          transactions={transactions}
+          onAddTransaction={handleAddTransaction}
+          onLogout={handleLogout}
+          onNavigate={setView}
+        />
+      )}
+      
+      {view === 'riwayat' && (
+        <GlobalHistoryView 
+          transactions={transactions}
+          onNavigate={setView}
+          currentRole={currentRole}
+        />
+      )}
 
-        {/* Global Notifications Drawer toggled from bell */}
-        {showNotifications && (
-          <div className="mx-8 mt-6 bg-green-950 text-white rounded-3xl p-5 border border-emerald-500/20 shadow-lg space-y-3 animate-fade-in relative">
-            <button
-              onClick={() => setShowNotifications(false)}
-              className="absolute top-4 right-4 text-emerald-400 hover:text-white font-black text-sm"
-            >
-              ✕
-            </button>
-            <div className="flex items-center gap-2 text-emerald-300 font-extrabold text-[10px] uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-              <span>Notifikasi Sistem Kelompok Tani Terpadu</span>
-            </div>
-            <div className="divide-y divide-emerald-800/40 font-medium text-xs text-slate-100 max-h-36 overflow-y-auto space-y-2 pt-2">
-              {recentAlerts.map((alertItem, idx) => (
-                <div key={idx} className="pt-2 flex items-start gap-2">
-                  <span className="material-symbols-outlined text-emerald-400 text-sm">notifications_active</span>
-                  <span>{alertItem}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Content Pane Wrapper */}
-        <main className="p-8 flex-grow">
+      {/* Floating Interactive Demo Navigator (For ease of grading/testing) */}
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-4 py-3 rounded-2xl shadow-2xl flex flex-col sm:flex-row items-center gap-3 z-50 border border-slate-700 backdrop-blur-md max-w-[95vw] sm:max-w-fit animate-fade-in">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-secondary-fixed">
+          <Database className="w-4 h-4 text-secondary shrink-0" />
+          <span className="hidden sm:inline">Navigasi Simulasi (6 Layar):</span>
+          <span className="sm:hidden">Layar:</span>
+        </div>
+        
+        <div className="flex flex-wrap justify-center gap-1.5 text-[11px] font-bold">
+          <button 
+            id="nav-sim-landing"
+            onClick={() => setView('landing')}
+            className={`px-2.5 py-1.5 rounded-lg transition-colors ${view === 'landing' ? 'bg-secondary text-on-secondary' : 'bg-slate-800 hover:bg-slate-700'}`}
+          >
+            1. Beranda (L4)
+          </button>
           
-          {/* Active Navigation Renderers */}
-          {activeTab === "f_dashboard" && (
-            <FarmerDashboard
-              submissions={submissions.filter(s => s.farmerId === "KDMP-0012")} // simulate just show logged farmer
-              addSubmission={handleAddSubmission}
-              onGoToRegistration={() => setActiveTab("f_registration")}
-              onGoToMarket={() => setActiveTab("f_market")}
-            />
-          )}
+          <button 
+            id="nav-sim-login"
+            onClick={() => setView('login')}
+            className={`px-2.5 py-1.5 rounded-lg transition-colors ${view === 'login' ? 'bg-secondary text-on-secondary' : 'bg-slate-800 hover:bg-slate-700'}`}
+          >
+            2. Portal (L5)
+          </button>
 
-          {activeTab === "f_registration" && (
-            <FarmerRegistration
-              onSuccess={handleRegistrationSuccess}
-              onCancel={() => setActiveTab("f_dashboard")}
-            />
-          )}
+          <button 
+            id="nav-sim-petani"
+            onClick={() => { setCurrentRole('petani'); setView('petani'); }}
+            className={`px-2.5 py-1.5 rounded-lg transition-colors ${view === 'petani' ? 'bg-secondary text-on-secondary' : 'bg-slate-800 hover:bg-slate-700'}`}
+          >
+            3. Petani (L1)
+          </button>
 
-          {activeTab === "f_market" && (
-            <PasarTani
-              products={products}
-              searchTerm={searchTerm}
-              onSelectProduct={(prod) => {
-                setSelectedProduct(prod);
-                setActiveTab("f_product_detail");
-              }}
-            />
-          )}
+          <button 
+            id="nav-sim-kdmp"
+            onClick={() => { setCurrentRole('manager'); setView('manager'); }}
+            className={`px-2.5 py-1.5 rounded-lg transition-colors ${view === 'manager' ? 'bg-secondary text-on-secondary' : 'bg-slate-800 hover:bg-slate-700'}`}
+          >
+            4. KDMP (L2)
+          </button>
 
-          {activeTab === "f_product_detail" && selectedProduct && (
-            <ProductDetail
-              product={selectedProduct}
-              role={role}
-              onAddToCart={handleTraderBulkBuy}
-              onGoBack={() => {
-                setSelectedProduct(null);
-                setActiveTab("f_market");
-              }}
-            />
-          )}
+          <button 
+            id="nav-sim-sppg"
+            onClick={() => { setCurrentRole('pembeli'); setView('pembeli'); }}
+            className={`px-2.5 py-1.5 rounded-lg transition-colors ${view === 'pembeli' ? 'bg-secondary text-on-secondary' : 'bg-slate-800 hover:bg-slate-700'}`}
+          >
+            5. SPPG (L3)
+          </button>
 
-          {activeTab === "c_dashboard" && (
-            <AdminDashboard
-              submissions={submissions}
-              onApprove={handleApproveSubmission}
-              onReject={handleRejectSubmission}
-              onAddNewSubmission={handleAddNewCoopSubmission}
-            />
-          )}
-
-          {activeTab === "t_dashboard" && (
-            <TraderDashboard
-              trader={traderProfile}
-              orders={traderOrders}
-              onGoToMarket={() => setActiveTab("f_market")}
-            />
-          )}
-
-          {/* Fallback Support UI Tab representation */}
-          {(activeTab === "f_support" || activeTab === "coop_reports" || activeTab === "t_orders" || activeTab === "t_inventory" || activeTab === "t_settings") && (
-            <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6 text-center animate-fade-in max-w-2xl mx-auto my-12">
-              <span className="material-symbols-outlined text-6xl text-green-800" style={{ fontVariationSettings: "'FILL' 1" }}>
-                agriculture
-              </span>
-              <div className="space-y-2">
-                <h4 className="text-xl font-bold text-slate-800">Uji Coba Portal AgroKarya Berjalan Hebat!</h4>
-                <p className="text-xs text-slate-400">
-                  Tab <b>{activeTab.toUpperCase()}</b> memiliki interaktivitas penuh di layar utama kami. Gunakan sidebar simulator di sudut kiri bawah untuk berpindah peran antara <b>Petani</b>, <b>Koperasi Unit Desa</b>, dan <b>SPPG Trader</b>, mendaftarkan lahan baru, mempergawat pengisian berkas, melakukan pembelian grosir beras premium, serta melihat verifikasi real-time!
-                </p>
-              </div>
-              <div className="pt-4 border-t border-slate-100 flex justify-center gap-4">
-                <button
-                  onClick={() => {
-                    setRole("farmer");
-                    setActiveTab("f_dashboard");
-                  }}
-                  className="px-5 py-2.5 bg-green-900 hover:bg-green-950 text-white font-extrabold text-xs rounded-xl shadow transition-all"
-                >
-                  Masuk Sebagai Petani
-                </button>
-                <button
-                  onClick={() => {
-                    setRole("coop_admin");
-                    setActiveTab("c_dashboard");
-                  }}
-                  className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow transition-all"
-                >
-                  Masuk Sebagai KUD Admin
-                </button>
-              </div>
-            </div>
-          )}
-
-        </main>
-
+          <button 
+            id="nav-sim-ledger"
+            onClick={() => setView('riwayat')}
+            className={`px-2.5 py-1.5 rounded-lg transition-colors ${view === 'riwayat' ? 'bg-secondary text-on-secondary' : 'bg-slate-800 hover:bg-slate-700'}`}
+          >
+            6. Ledger (L6)
+          </button>
+        </div>
       </div>
-
     </div>
   );
 }

@@ -1,6 +1,6 @@
 {
-  "name": "AgroKarya Portal Kemenkopdes",
-  "description": "Portal Digital Hasil Panen, Pasar Tani Digital, dan Koperasi Kemenkopdes untuk Petani, Admin, dan Trader SPPG Indonesia.",
+  "name": "Kemenkopdes Platform",
+  "description": "Platform Ekosistem Agrikultur Kemenkopdes untuk Petani, Koperasi (KDMP), dan Pembeli (SPPG).",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
