@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - deploy
-
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
+            sudo mkdir -p "$HOME/web-kemenkopdes"
       - name: Deploy web app only
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -19,8 +17,7 @@ jobs:
             
             set -e
             echo "Tersambung ke server, mulai deploy Kemenkopdes web app..."
-            sudo su -
-            mkdir -p "$HOME/web-kemenkopdes"
+            sudo mkdir -p "$HOME/web-kemenkopdes"
             cd "$HOME/web-kemenkopdes"
             if [ ! -d .git ]; then
               git clone --branch main --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
@@ -32,5 +29,5 @@ jobs:
             npm run build
             rm -rf public/*
             cp -r dist/* public/
-            docker exec web-kemenkopdes nginx -s reload
+            sudo docker exec web-kemenkopdes nginx -s reload
             echo "Deploy Kemenkopdes selesai. node-web dan mqtt-broker tidak disentuh."
