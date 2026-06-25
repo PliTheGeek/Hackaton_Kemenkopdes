@@ -47,8 +47,6 @@ jobs:
                 node:20-alpine \
                 sh -lc "npm install && npm run build"
 
-              mkdir -p public
-              rm -rf public/*
-              cp -r dist/* public/
+              cp -r dist/. "$app_dir"/
               sudo docker exec web-kemenkopdes nginx -s reload
               echo "Deploy Kemenkopdes selesai. node-web dan mqtt-broker tidak disentuh."
