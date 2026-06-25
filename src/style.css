@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
+@theme {
   --color-primary: #012d1d;
   --color-on-primary: #ffffff;
   --color-primary-container: #1b4332;
