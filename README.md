@@ -77,28 +77,6 @@ Pembayaran SPPG → KDMP → Petani (cash / tempo)
 
 ---
 
-## Cara Install & Menjalankan
-
-# 1. Clone repository
-git clone (https://github.com/PliTheGeek/Hackaton_Kemenkopdes)
-
-# 2. Masuk ke direktori project
-cd jalur
-
-# 3. Install dependencies
-npm install
-
-# 4. Salin file environment
-cp .env.example .env
-
-# 5. Jalankan development server
-npm run dev
-
-
-Aplikasi akan berjalan di `(http://20.6.33.91:8080/)`
-
----
-
 ## Relevansi
 
 JALUR dikembangkan dalam konteks "Hackathon Digital Cooperatives Expo 2026" yang diselenggarakan oleh Kemenkop RI, sebagai solusi untuk Pilar 1 — Peningkatan Volume Usaha Koperasi, dengan solusi digital untuk mengoptimalkan rantai pasok, pembukuan, dan volume transaksi KDKMP secara real-time.
