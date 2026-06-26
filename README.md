@@ -9,7 +9,7 @@ Figma : https://www.figma.com/design/AsRiEAVkfxSp5DRDi50w4C/Kemenkop-UI-UX?node-
 
 ## Latar Belakang Masalah
 
-Petani desa Indonesia secara struktural berada dalam posisi tawar yang lemah. Tanpa fasilitas penyimpanan yang memadai, komoditas hasil panen cepat membusuk — memaksa petani menjual dengan harga murah ke tengkulak daripada merugi lebih besar. Di sisi lain, tidak ada sistem yang menghubungkan petani langsung ke SPPG, sehingga meskipun permintaan dari dapur MBG ada, petani tidak tahu harus menjual ke mana.
+Petani desa Indonesia secara struktural berada dalam posisi tawar yang lemah. Tanpa fasilitas penyimpanan yang memadai, komoditas hasil panen cepat membusuk sehingga memaksa petani menjual dengan harga murah ke tengkulak daripada merugi lebih besar. Di sisi lain, tidak ada sistem yang menghubungkan petani langsung ke SPPG, sehingga meskipun permintaan dari dapur MBG ada, petani tidak tahu harus menjual ke mana.
 
 Dua kondisi ini saling memperparah:
 - Petani tidak punya waktu mencari pembeli yang lebih baik karena komoditasnya tidak bisa disimpan lama
