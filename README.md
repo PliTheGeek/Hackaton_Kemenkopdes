@@ -3,6 +3,7 @@
 Platform digital yang menghubungkan petani desa langsung ke Satuan Pelayanan Pemenuhan Gizi (SPPG) melalui KDMP sebagai agregator, memotong ketergantungan pada tengkulak.
 
 Akses Demo Aplikasi : http://20.6.33.91:8080/
+Figma : https://www.figma.com/design/AsRiEAVkfxSp5DRDi50w4C/Kemenkop-UI-UX?node-id=58-2&t=M6MWGuvPAKT6ZvBx-1
 
 
 ## Latar Belakang Masalah
