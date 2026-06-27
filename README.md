@@ -50,7 +50,7 @@ JALUR hadir sebagai platform e-commerce berbasis gotong royong yang menempatkan 
 - Pemilihan metode pengiriman: diantar oleh KDMP atau diambil sendiri
 
 ---
-
+```
 ## Alur Kerja
 Petani mengisi data & kualitas hasil tani
         ↓
@@ -64,9 +64,7 @@ SPPG melihat ketersediaan & mengajukan pemesanan
 KDMP approval & proses pengiriman
         ↓
 Pembayaran SPPG → KDMP → Petani (cash / tempo)
-
----
-
+```
 
 ## Tech Stack
 
