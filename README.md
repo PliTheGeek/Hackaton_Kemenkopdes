@@ -64,9 +64,9 @@ SPPG melihat ketersediaan & mengajukan pemesanan
 KDMP approval & proses pengiriman
         ↓
 Pembayaran SPPG → KDMP → Petani (cash / tempo)
-```
 
----
+
+
 
 ## Tech Stack
 
@@ -83,6 +83,6 @@ Pembayaran SPPG → KDMP → Petani (cash / tempo)
 
 JALUR dikembangkan dalam konteks "Hackathon Digital Cooperatives Expo 2026" yang diselenggarakan oleh Kemenkop RI, sebagai solusi untuk Pilar 1 — Peningkatan Volume Usaha Koperasi, dengan solusi digital untuk mengoptimalkan rantai pasok, pembukuan, dan volume transaksi KDKMP secara real-time.
 
----
+
 
 > "Bukan sekadar e-commerce — JALUR adalah jembatan ekonomi antara desa dan dapur bangsa."
