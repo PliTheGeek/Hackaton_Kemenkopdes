@@ -1,4 +1,4 @@
-## JALUR — Sistem Jaringan Langsung Usaha Rakyat
+## SIJALUR — Sistem Jaringan Langsung Usaha Rakyat
 
 Platform digital yang menghubungkan petani desa langsung ke Satuan Pelayanan Pemenuhan Gizi (SPPG) melalui KDMP sebagai agregator, memotong ketergantungan pada tengkulak.
 
