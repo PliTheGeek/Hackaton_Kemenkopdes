@@ -11,6 +11,14 @@ Figma : https://www.figma.com/design/AsRiEAVkfxSp5DRDi50w4C/Kemenkop-UI-UX?node-
 
 Petani desa Indonesia secara struktural berada dalam posisi tawar yang lemah. Tanpa fasilitas penyimpanan yang memadai, komoditas hasil panen cepat membusuk sehingga memaksa petani menjual dengan harga murah ke tengkulak daripada merugi lebih besar. Di sisi lain, tidak ada sistem yang menghubungkan petani langsung ke SPPG, sehingga meskipun permintaan dari dapur MBG ada, petani tidak tahu harus menjual ke mana.
 
+**Data konkrit yang menggambarkan kondisi ini:**
+
+- **NTP Hortikultura turun 5,31% (April 2026, BPS)** — Harga jual komoditas seperti cabai, kol, dan bawang merah di tingkat petani anjlok, sementara biaya produksi justru naik. Fenomena *double squeeze* ini menekan margin petani hingga titik terendah.
+- **Petani lokal belum benar-benar masuk rantai pasok MBG (Mei 2026)** — Kebutuhan pangan SPPG masih banyak dipasok dari distributor besar, sehingga nilai ekonomi dinikmati rantai distribusi, bukan petani.
+- **Biaya logistik Indonesia 14,9% dari PDB** — Tertinggi di Asia Tenggara, membuat distribusi komoditas dari desa ke SPPG tidak ekonomis bagi petani kecil.
+- **Kerusakan produk hortikultura mencapai 20–30%** — Akibat minimnya fasilitas cold storage di tingkat desa, memaksa petani menjual cepat dengan harga murah daripada merugi karena busuk.
+- **Kopdes Merah Putih belum siap jadi offtaker (Juni 2026)** — Hambatan utama bukan regulasi, melainkan modal kerja: koperasi harus beli panen dari petani, simpan stok, lalu tunggu pembayaran dari SPPG.
+
 Dua kondisi ini saling memperparah:
 - Petani tidak punya waktu mencari pembeli yang lebih baik karena komoditasnya tidak bisa disimpan lama
 - Petani tidak punya akses informasi untuk menemukan pembeli tersebut
@@ -26,6 +34,18 @@ JALUR hadir sebagai platform e-commerce berbasis gotong royong yang menempatkan 
 - Petani dapat mendistribusikan hasil tani langsung ke SPPG tanpa melalui tengkulak
 - SPPG dapat membeli bahan baku dengan harga lebih wajar langsung dari sumbernya
 - KDMP berperan sebagai agregator, penyedia cold storage, logistik, sekaligus koperasi simpan pinjam bagi petani
+
+---
+
+## 💡 Kebaruan & Diferensiasi
+
+**Yang benar-benar baru dari JALUR:**
+
+- **Ekosistem tertutup petani–KDMP–SPPG** — Satu-satunya platform yang menghubungkan ketiga aktor ini secara langsung tanpa perantara tengkulak.
+- **Visitasi & quality control terdigitalisasi** — Ada alur approval resmi berbasis kunjungan lapangan, bukan sekadar upload foto sepihak.
+- **Fleksibilitas pembayaran ke petani** — Opsi cash langsung atau tempo cicilan 3/6/12 bulan, menjawab masalah desakan likuiditas petani.
+- **Koperasi simpan pinjam terintegrasi** — Petani bisa akses modal di platform yang sama tempat dia menjual komoditas.
+- **Ledger transparan** — Mencegah praktik koperasi "jadi-jadian" yang berpotensi merugikan petani dan SPPG.
 
 ---
 
@@ -50,8 +70,9 @@ JALUR hadir sebagai platform e-commerce berbasis gotong royong yang menempatkan 
 - Pemilihan metode pengiriman: diantar oleh KDMP atau diambil sendiri
 
 ---
-```
+
 ## Alur Kerja
+```
 Petani mengisi data & kualitas hasil tani
         ↓
 KDMP melakukan visitasi & pengecekan lapangan
